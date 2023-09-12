@@ -1,11 +1,14 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 #include <time.h>
 #include <iostream>
+#include <stdio.h>
+#include <stdint.h>
+#include <lib/support/logging/CHIPLogging.h>
 
 using namespace std;
-//using namespace chip::Logging;
 
 namespace chip{
 
@@ -17,7 +20,13 @@ namespace chip{
                 T t1;
                 T t2;
                 string label;
+                //LogModule module;
+                uint8_t *module;
             public:    
+                DurationTimer(uint8_t *mod, string s ){
+                   module = mod;
+                   label = s;
+                }
                 DurationTimer(string s ){
                    label = s;
                 }
@@ -28,17 +37,33 @@ namespace chip{
         };
 
         class TimespecTimer : public DurationTimer<timespec>{
-                //char * module;
+                
+                protected:
+                  
+                    char* toTimeStr(timespec time){
+                        
+                        char buff[100];
+                        strftime(buff, sizeof buff, "%D %T", gmtime(&time.tv_sec) );
+                        char* str = new char[ sizeof buff + 1];
+                        //todo revisit this size
+                        snprintf(str, sizeof(buff)+4+21 , " %s.%09ld", buff, time.tv_nsec );
+                        return str;
+                    }
+
                 public:
-                    TimespecTimer( string s ): DurationTimer(s){}
+                    TimespecTimer(uint8_t *mod, string s ):  DurationTimer(mod, s){} ;
+                    TimespecTimer( string s ): DurationTimer(s){};
                     //member functions
                     void start(){
                         struct timespec now;
                         clock_gettime(CLOCK_REALTIME, &now) ;
+                        
                         t1 = now;
                         //ChipLogProgress(module, " %ld.%09ld KN "+label+" ", now.tv_sec,now.tv_nsec);
                         //ChipLogAutomation( " %ld.%09ld KN "+label+" ", now.tv_sec,now.tv_nsec);
-                        cout <<  "KN "<< label << "start sec" << now.tv_sec<<","<<now.tv_nsec << '\n';
+                        //ChipLogAutomation( " %s KN "+label+" ", toTimeStr( now ) );
+                        cout <<  "KN "<< label << " start (sec) " << toTimeStr( now ) << '\n';
+
                     }
 
                     void stop(){
@@ -47,7 +72,8 @@ namespace chip{
                         t2 = now;
                         //ChipLogProgress(module, " %ld.%09ld KN "+label+" ", now.tv_sec,now.tv_nsec);
                         //ChipLogAutomation( " %ld.%09ld KN "+label+" ", now.tv_sec,now.tv_nsec);
-                        cout <<  "KN "<< label << "stop sec" << now.tv_sec<<","<<now.tv_nsec << '\n';
+                        //cout <<  "KN "<< label << " stop (sec) " << strftime(buff, sizeof buff, "%D %T", gmtime(&now.tv_sec)) << '\n';
+                        cout <<  "KN "<< label << " stop (sec) " << toTimeStr( now ) << '\n';
                         duration();
                     }
 
