@@ -38,6 +38,7 @@ void CASESessionManager::FindOrEstablishSession(const ScopedNodeId & peerId, Cal
 #endif // CHIP_DEVICE_CONFIG_ENABLE_AUTOMATIC_CASE_RETRIES
 )
 {
+    //chip::timing::GenericTimer timer = chip::timing::GetDefaultTimingInstance( "CASESessionManager: FindOrEstablishSession" );
     chip::timing::TimespecTimer timer ( "CASESessionManager: FindOrEstablishSession" );
     timer.start();
 
