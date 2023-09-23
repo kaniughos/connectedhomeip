@@ -220,8 +220,9 @@ CHIP_ERROR Instance::Write(const ConcreteDataAttributePath & aPath, AttributeVal
 void Instance::OnNetworkingStatusChange(NetworkCommissioning::Status aCommissioningError, Optional<ByteSpan> aNetworkId,
                                         Optional<int32_t> aConnectStatus)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: OnNetworkingStatusChange ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: OnNetworkingStatusChange");
+    timer->start();
+
     if (aNetworkId.HasValue() && aNetworkId.Value().size() > kMaxNetworkIDLen)
     {
         ChipLogError(DeviceLayer, "Invalid network id received when calling OnNetworkingStatusChange");
@@ -245,13 +246,13 @@ void Instance::OnNetworkingStatusChange(NetworkCommissioning::Status aCommission
     {
         mLastConnectErrorValue.SetNull();
     }
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::HandleScanNetworks(HandlerContext & ctx, const Commands::ScanNetworks::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleScanNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleScanNetwork");
+    timer->start();
     MATTER_TRACE_SCOPE("HandleScanNetwork", "NetworkCommissioning");
     if (mFeatureFlags.Has(Feature::kWiFiNetworkInterface))
     {
@@ -291,7 +292,7 @@ void Instance::HandleScanNetworks(HandlerContext & ctx, const Commands::ScanNetw
     {
         ctx.mCommandHandler.AddStatus(ctx.mRequestPath, Protocols::InteractionModel::Status::UnsupportedCommand);
     }
-    timer.stop();
+    timer->stop();
 }
 
 namespace {
@@ -325,8 +326,8 @@ bool CheckFailSafeArmed(CommandHandlerInterface::HandlerContext & ctx)
 
 void Instance::HandleAddOrUpdateWiFiNetwork(HandlerContext & ctx, const Commands::AddOrUpdateWiFiNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleAddOrUpdateWiFiNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleAddOrUpdateWiFiNetwork");
+    timer->start();
 
     MATTER_TRACE_SCOPE("HandleAddOrUpdateWiFiNetwork", "NetworkCommissioning");
 
@@ -382,13 +383,14 @@ void Instance::HandleAddOrUpdateWiFiNetwork(HandlerContext & ctx, const Commands
     {
         UpdateBreadcrumb(req.breadcrumb);
     }
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::HandleAddOrUpdateThreadNetwork(HandlerContext & ctx, const Commands::AddOrUpdateThreadNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleAddOrUpdateThreadNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleAddOrUpdateThreadNetwork ");
+    timer->start();
+
     MATTER_TRACE_SCOPE("HandleAddOrUpdateThreadNetwork", "NetworkCommissioning");
 
     VerifyOrReturn(CheckFailSafeArmed(ctx));
@@ -408,7 +410,7 @@ void Instance::HandleAddOrUpdateThreadNetwork(HandlerContext & ctx, const Comman
     {
         UpdateBreadcrumb(req.breadcrumb);
     }
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::UpdateBreadcrumb(const Optional<uint64_t> & breadcrumb)
@@ -427,8 +429,8 @@ void Instance::CommitSavedBreadcrumb()
 
 void Instance::HandleRemoveNetwork(HandlerContext & ctx, const Commands::RemoveNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleRemoveNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleRemoveNetwork");
+    timer->start();
 
     MATTER_TRACE_SCOPE("HandleRemoveNetwork", "NetworkCommissioning");
 
@@ -449,13 +451,13 @@ void Instance::HandleRemoveNetwork(HandlerContext & ctx, const Commands::RemoveN
         UpdateBreadcrumb(req.breadcrumb);
     }
 
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::HandleConnectNetwork(HandlerContext & ctx, const Commands::ConnectNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleConnectNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleConnectNetwork");
+    timer->start();
 
     MATTER_TRACE_SCOPE("HandleConnectNetwork", "NetworkCommissioning");
     if (req.networkID.size() > DeviceLayer::NetworkCommissioning::kMaxNetworkIDLen)
@@ -472,13 +474,13 @@ void Instance::HandleConnectNetwork(HandlerContext & ctx, const Commands::Connec
     mCurrentOperationBreadcrumb = req.breadcrumb;
     mpWirelessDriver->ConnectNetwork(req.networkID, this);
 
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::HandleReorderNetwork(HandlerContext & ctx, const Commands::ReorderNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleReorderNetwork ");
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("NetworkCommissioning: HandleReorderNetwork");
+    timer->start();
 
     MATTER_TRACE_SCOPE("HandleReorderNetwork", "NetworkCommissioning");
     Commands::NetworkConfigResponse::Type response;
@@ -494,7 +496,7 @@ void Instance::HandleReorderNetwork(HandlerContext & ctx, const Commands::Reorde
     {
         UpdateBreadcrumb(req.breadcrumb);
     }
-    timer.stop();
+    timer->stop();
 }
 
 void Instance::OnResult(Status commissioningError, CharSpan debugText, int32_t interfaceStatus)

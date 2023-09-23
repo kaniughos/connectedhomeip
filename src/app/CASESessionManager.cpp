@@ -38,9 +38,8 @@ void CASESessionManager::FindOrEstablishSession(const ScopedNodeId & peerId, Cal
 #endif // CHIP_DEVICE_CONFIG_ENABLE_AUTOMATIC_CASE_RETRIES
 )
 {
-    //chip::timing::GenericTimer timer = chip::timing::GetDefaultTimingInstance( "CASESessionManager: FindOrEstablishSession" );
-    chip::timing::TimespecTimer timer ( "CASESessionManager: FindOrEstablishSession" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("CASESessionManager: FindOrEstablishSession");
+    timer->start();
 
     ChipLogDetail(CASESessionManager, "FindOrEstablishSession: PeerId = [%d:" ChipLogFormatX64 "]", peerId.GetFabricIndex(),
                   ChipLogValueX64(peerId.GetNodeId()));
@@ -73,7 +72,7 @@ void CASESessionManager::FindOrEstablishSession(const ScopedNodeId & peerId, Cal
 
     session->Connect(onConnection, onFailure);
 
-    timer.stop();
+    timer->stop();
 }
 
 void CASESessionManager::ReleaseSessionsForFabric(FabricIndex fabricIndex)

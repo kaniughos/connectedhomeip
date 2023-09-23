@@ -35,8 +35,8 @@ CHIP_ERROR PairingSession::AllocateSecureSession(SessionManager & sessionManager
 
 CHIP_ERROR PairingSession::ActivateSecureSession(const Transport::PeerAddress & peerAddress)
 {
-    chip::timing::TimespecTimer timer ( "Inet: ActivateSecureSession" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("Inet: ActivateSecureSession");
+    timer->start();       
 
     // Prepare SecureSession fields, including key derivation, first, before activation
     Transport::SecureSession * secureSession = mSecureSessionHolder->AsSecureSession();
@@ -53,7 +53,7 @@ CHIP_ERROR PairingSession::ActivateSecureSession(const Transport::PeerAddress & 
     ChipLogDetail(Inet, "New secure session activated for device " ChipLogFormatScopedNodeId ", LSID:%d PSID:%d!",
                   ChipLogValueScopedNodeId(GetPeer()), secureSession->GetLocalSessionId(), peerSessionId);
 
-    timer.stop();
+    timer->stop();
 
     return CHIP_NO_ERROR;
 }

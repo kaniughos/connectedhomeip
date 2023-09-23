@@ -124,8 +124,8 @@ exit:
 
 void CASEServer::PrepareForSessionEstablishment(const ScopedNodeId & previouslyEstablishedPeer)
 {
-    chip::timing::TimespecTimer timer ( "Inet: CASE Session establishment" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("Inet: CASE Session establishment");
+    timer->start();     
 
     GetSession().Clear();
 
@@ -178,7 +178,7 @@ void CASEServer::PrepareForSessionEstablishment(const ScopedNodeId & previouslyE
     //
     VerifyOrDie(mPinnedSecureSession.HasValue());
 
-    timer.stop();
+    timer->stop();
 }
 
 void CASEServer::OnSessionEstablishmentError(CHIP_ERROR err)

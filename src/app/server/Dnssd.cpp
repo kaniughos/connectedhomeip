@@ -380,8 +380,8 @@ void DnssdServer::StartServer(Dnssd::CommissioningMode mode)
 {
     ChipLogProgress(Discovery, "Updating services using commissioning mode %d", static_cast<int>(mode));
     
-    chip::timing::TimespecTimer timer ( "Discover: StartServer " );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("Discover: StartServer");
+    timer->start();    
 
     DeviceLayer::PlatformMgr().AddEventHandler(OnPlatformEventWrapper, 0);
 
@@ -452,7 +452,7 @@ void DnssdServer::StartServer(Dnssd::CommissioningMode mode)
         ChipLogError(Discovery, "Failed to finalize service update: %" CHIP_ERROR_FORMAT, err.Format());
     }
 
-    timer.stop();
+    timer->stop();
 }
 
 #if CHIP_ENABLE_ROTATING_DEVICE_ID && defined(CHIP_DEVICE_CONFIG_ROTATING_DEVICE_ID_UNIQUE_ID)

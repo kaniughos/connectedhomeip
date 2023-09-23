@@ -48,8 +48,8 @@
 #include <lib/support/logging/CHIPLogging.h>
 #include <platform/CHIPDeviceLayer.h>
 #include <string.h>
-#include <tracing/macros.h>
 #include <tracing/DurationTimer.h>
+#include <tracing/macros.h>
 
 using namespace chip;
 using namespace ::chip::Transport;
@@ -414,8 +414,8 @@ bool emberAfOperationalCredentialsClusterRemoveFabricCallback(app::CommandHandle
     ChipLogProgress(Zcl, "OpCreds: Received a RemoveFabric Command for FabricIndex 0x%x",
                     static_cast<unsigned>(fabricBeingRemoved));
 
-    chip::timing::TimespecTimer timer ( "OpCreds: RemoveFabric" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: RemoveFabric");
+    timer->start();
 
     if (!IsValidFabricIndex(fabricBeingRemoved))
     {
@@ -465,7 +465,7 @@ exit:
         }
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -482,8 +482,8 @@ bool emberAfOperationalCredentialsClusterUpdateFabricLabelCallback(app::CommandH
 
     ChipLogProgress(Zcl, "OpCreds: Received an UpdateFabricLabel command");
 
-    chip::timing::TimespecTimer timer ( "OpCreds: UpdateFabricLabel" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: UpdateFabricLabel");
+    timer->start();
 
     if (label.size() > 32)
     {
@@ -524,7 +524,7 @@ exit:
         commandObj->AddStatus(commandPath, finalStatus);
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -629,8 +629,8 @@ bool emberAfOperationalCredentialsClusterAddNOCCallback(app::CommandHandler * co
 
     ChipLogProgress(Zcl, "OpCreds: Received an AddNOC command");
 
-    chip::timing::TimespecTimer timer ( "OpCreds: AddNOC" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: AddNOC");
+    timer->start();
 
     VerifyOrExit(NOCValue.size() <= Credentials::kMaxCHIPCertLength, nonDefaultStatus = Status::InvalidCommand);
     VerifyOrExit(!ICACValue.HasValue() || ICACValue.Value().size() <= Credentials::kMaxCHIPCertLength,
@@ -772,8 +772,8 @@ exit:
         ChipLogError(Zcl, "OpCreds: Failed AddNOC request with IM error 0x%02x", to_underlying(nonDefaultStatus));
     }
 
-    timer.stop();
-    
+    timer->stop();
+
     return true;
 }
 
@@ -793,8 +793,8 @@ bool emberAfOperationalCredentialsClusterUpdateNOCCallback(app::CommandHandler *
 
     ChipLogProgress(Zcl, "OpCreds: Received an UpdateNOC command");
 
-    chip::timing::TimespecTimer timer ( "OpCreds: UpdateNOC" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: UpdateNOC");
+    timer->start();
 
     auto & fabricTable            = Server::GetInstance().GetFabricTable();
     auto & failSafeContext        = Server::GetInstance().GetFailSafeContext();
@@ -869,7 +869,7 @@ exit:
         ChipLogError(Zcl, "OpCreds: Failed UpdateNOC request with IM error 0x%02x", to_underlying(nonDefaultStatus));
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -879,8 +879,8 @@ bool emberAfOperationalCredentialsClusterCertificateChainRequestCallback(
     const Commands::CertificateChainRequest::DecodableType & commandData)
 {
 
-    chip::timing::TimespecTimer timer ( "OpCreds: Certificate Chain" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: Certificate Chain");
+    timer->start();
 
     MATTER_TRACE_SCOPE("CertificateChainRequest", "OperationalCredentials");
     auto & certificateType = commandData.certificateType;
@@ -923,7 +923,7 @@ exit:
         commandObj->AddStatus(commandPath, Status::Failure);
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -932,9 +932,8 @@ bool emberAfOperationalCredentialsClusterAttestationRequestCallback(app::Command
                                                                     const app::ConcreteCommandPath & commandPath,
                                                                     const Commands::AttestationRequest::DecodableType & commandData)
 {
-
-    chip::timing::TimespecTimer timer ( "OpCreds: AttestationRequest" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: AttestationRequest");
+    timer->start();
 
     MATTER_TRACE_SCOPE("AttestationRequest", "OperationalCredentials");
     auto & attestationNonce = commandData.attestationNonce;
@@ -1025,7 +1024,7 @@ exit:
                      to_underlying(finalStatus), err.Format());
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -1034,9 +1033,8 @@ bool emberAfOperationalCredentialsClusterCSRRequestCallback(app::CommandHandler 
                                                             const app::ConcreteCommandPath & commandPath,
                                                             const Commands::CSRRequest::DecodableType & commandData)
 {
-
-    chip::timing::TimespecTimer timer ( "OpCreds: CSRRequest" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: CSRRequest");
+    timer->start();
 
     MATTER_TRACE_SCOPE("CSRRequest", "OperationalCredentials");
     ChipLogProgress(Zcl, "OpCreds: Received a CSRRequest command");
@@ -1166,7 +1164,7 @@ exit:
                      to_underlying(finalStatus), err.Format());
     }
 
-    timer.stop();
+    timer->stop();
 
     return true;
 }
@@ -1176,8 +1174,8 @@ bool emberAfOperationalCredentialsClusterAddTrustedRootCertificateCallback(
     const Commands::AddTrustedRootCertificate::DecodableType & commandData)
 {
 
-    chip::timing::TimespecTimer timer ( "OpCreds: AddTrustedRootCertificate" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("OpCreds: AddTrustedRootCertificate");
+    timer->start();
 
     MATTER_TRACE_SCOPE("AddTrustedRootCertificate", "OperationalCredentials");
 
@@ -1230,7 +1228,7 @@ exit:
     }
 
     commandObj->AddStatus(commandPath, finalStatus);
-    timer.stop();
+    timer->stop();
 
     return true;
 }

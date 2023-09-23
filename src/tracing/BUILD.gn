@@ -40,6 +40,8 @@ static_library("tracing") {
     "registry.h",
     "DurationTimer.h",
     "DurationTimer.cpp",
+    "DurationTimerImpl.h",
+    "DurationTimerImpl.cpp",
   ]
 
   public_deps = [

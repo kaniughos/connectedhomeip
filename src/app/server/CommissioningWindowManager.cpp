@@ -234,8 +234,8 @@ CHIP_ERROR CommissioningWindowManager::OpenCommissioningWindow(Seconds16 commiss
 
 CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 {
-    chip::timing::TimespecTimer timer ( "AppServer: AdvertiseAndListenForPASE" );
-    timer.start();
+    chip::timing::GenericTimer * timer = chip::timing::GetDefaultTimingInstancePtr("AppServer: AdvertiseAndListenForPASE");
+    timer->start();
 
     VerifyOrReturnError(mCommissioningTimeoutTimerArmed, CHIP_ERROR_INCORRECT_STATE);
 
@@ -276,7 +276,7 @@ CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 
     ReturnErrorOnFailure(StartAdvertisement());
 
-    timer.stop();
+    timer->stop();
     return CHIP_NO_ERROR;
 }
 
