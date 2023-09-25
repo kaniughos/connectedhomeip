@@ -1,0 +1,10 @@
+include(CheckFunctionExists)
+include(CheckLibraryExists)
+check_library_exists(rt clock_gettime "time.h" HAVE_CLOCK_GETTIME)
+if (HAVE_CLOCK_GETTIME)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lrt")
+    set(CMAKE_C_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES} -lrt")
+else()
+    # might also be in libc
+    check_library_exists(c clock_gettime "" HAVE_CLOCK_GETTIME)
+endif()

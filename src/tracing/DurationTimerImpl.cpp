@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string>
 #include <time.h>
+#include <sys/time.h>
 // #include <system/SystemClock.h>
 
 using namespace std;
@@ -51,6 +52,7 @@ DurationTimer<chip::System::Clock::Timestamp> GetSystemClockTimingInstance(strin
 }
 */
 
+#ifdef CHIP_DEVICE_IS_ESP32_2
 /**   TimeTTimer implementations   */
 
 // static function - time_t is in seconds
@@ -99,8 +101,12 @@ char * TimeTTimer::toTimeStr(time_t time)
     return str;
 }
 
-/**   TimeValTimer implementations   */
+TimeTTimer::~TimeTTimer(){}
 
+#endif
+
+/**   TimeValTimer implementations   */
+#ifdef CHIP_DEVICE_IS_NRF
 // static function - time_t is in seconds
 double TimeValTimer::duration_calc(timeval start, timeval stop)
 {
@@ -149,27 +155,13 @@ char * TimeValTimer::toTimeStr(timeval time)
     return str; // timeval_to_str( buff, 0, &time);
 }
 
-/*
-char * timeval_to_str(char iso8601[ISO8601_LEN], unsigned precision, const struct timeval * tv ) {
-    struct tm tm;
-    if (!gmtime_r(&tv->tv_sec, &tm))
-        return memcpy(iso8601, "Error: Year overflow", sizeof "Error: Year overflow");
+TimeValTimer::~TimeValTimer(){}
 
-    tm.tm_year %= 10*1000;
-    char *frac = iso8601 + strftime(iso8601, sizeof "1970-01-01T23:59:59.", "%Y-%m-%dT%H:%M:%SZ", &tm);
+#endif
 
-    if (precision) {
-        unsigned long usecs = tv->tv_usec;
-        for (int i = precision; i < 6; i++) usecs /= 10;
-        char *spaces = frac + sprintf(frac - 1, ".%-*luZ", precision, usecs) - 3;
-        if (spaces > frac) while (*spaces == ' ') *spaces-- = '0';
-    }
-
-    return iso8601;
-}
-*/
 
 /**   TimespecTimer implementations   */
+#ifdef CHIP_DEVICE_IS_ESP32
 
 // static function
 double TimespecTimer::duration_calc(timespec start, timespec stop)
@@ -214,6 +206,9 @@ char * TimespecTimer::toTimeStr(timespec time)
     return str;
 }
 
+TimespecTimer::~TimespecTimer(){}
+
+#endif
 
 } // namespace timing
 

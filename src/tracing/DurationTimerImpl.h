@@ -4,10 +4,10 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
-#include <time.h>
 // #include <system/SystemClock.h>
 // timeval
 #include <sys/time.h>
+#include <time.h>
 
 using namespace std;
 
@@ -15,40 +15,7 @@ using namespace std;
 namespace chip {
 namespace timing {
 
-template <typename T>
-class TempTimer
-{
-protected:
-    T t1;
-    T t2;
-    string label;
-    // todo revisit module references
-    uint8_t module;
-
-public:
-    // constructors
-    TempTimer(uint8_t mod, string s)
-    {
-        module = mod;
-        label  = s;
-    }
-    TempTimer(string s) { label = s; }
-    // ~TempTimer() = default;
-    void start();
-    void stop();
-    double duration();
-
-    void destroy()
-    {
-        t1    = NULL;
-        t2    = NULL;
-        label = NULL;
-    };
-
-    static double duration_calc(T start, T stop);
-    // DurationTimer static getInstance(string s);
-};
-
+#ifdef CHIP_DEVICE_IS_ESP32
 // todo add description
 class TimespecTimer : public DurationTimer<timespec>
 {
@@ -58,9 +25,9 @@ private:
 
 public:
     // constructors
-    TimespecTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
+    //TimespecTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
     TimespecTimer(string s) : DurationTimer(s){};
-    ~TimespecTimer() = default;
+    ~TimespecTimer();
 
     // member functions
     void start() override;
@@ -78,6 +45,9 @@ public:
     };
 };
 
+#endif
+
+#ifdef CHIP_DEVICE_IS_ESP32_2
 // todo add description
 class TimeTTimer : public DurationTimer<time_t>
 {
@@ -87,9 +57,9 @@ private:
 
 public:
     // constructors
-    TimeTTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
+    //TimeTTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
     TimeTTimer(string s) : DurationTimer(s){};
-    ~TimeTTimer() = default;
+    ~TimeTTimer() ;
     // member functions
     void start();
     void stop();
@@ -106,6 +76,9 @@ public:
     };
 };
 
+#endif
+
+#ifdef CHIP_DEVICE_IS_NRF
 // todo add description
 class TimeValTimer : public DurationTimer<timeval>
 {
@@ -115,9 +88,9 @@ private:
 
 public:
     // constructors
-    TimeValTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
+    //TimeValTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
     TimeValTimer(string s) : DurationTimer(s){};
-    ~TimeValTimer() = default;
+    ~TimeValTimer();
     // member functions
     void start();
     void stop();
@@ -135,6 +108,7 @@ public:
     };
 };
 
+#endif
 // todo add description
 /**
     class SystemClockTimer : public DurationTimer<chip::System::Clock::Timestamp>{
@@ -182,9 +156,6 @@ DurationTimer<timeval> GetTimeValTimingInstance(string label){
      return GetTimeTTimingInstance(label);
  }
  */
-
-// GenericTimer GetDefaultTimingInstance(string label);
-// GenericTimer * GetDefaultTimingInstancePtr( string label);
 
 } // namespace timing
 } // namespace chip

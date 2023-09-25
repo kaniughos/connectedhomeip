@@ -1,9 +1,10 @@
 #include "DurationTimer.h"
 #include "DurationTimerImpl.h"
-#include <lib/support/logging/CHIPLogging.h>
+//#include <lib/support/logging/CHIPLogging.h>
 #include <stdint.h>
 #include <string>
-#include <time.h>
+//#include <time.h>
+//#include <sys/time.h>
 // #include <system/SystemClock.h>
 
 using namespace std;
@@ -12,27 +13,41 @@ using namespace std;
 // todo add description
 namespace chip {
 namespace timing {
-
-//GenericTimer::~GenericTimer(){};
-//DurationTimer::~DurationTimer(){};
-
+    
 GenericTimer GetDefaultTimingInstance(string label)
 {
-   // return chip::timing::TimespecTimer(label);
-   return chip::timing::TimeValTimer(label);
+    #ifdef CHIP_DEVICE_IS_ESP32
+        return chip::timing::TimespecTimer(label);
+    #elseif CHIP_DEVICE_IS_NRF
+        return chip::timing::TimeValTimer(label);  
+    #elseif CHIP_DEVICE_IS_ESP32_2
+        return chip::timing::TimeTTimer(label);   
+    #else
+        return chip::timing::TimeValTimer(label);      
+    #endif
 }
 
 GenericTimer * GetDefaultTimingInstancePtr(string label)
 {
-    /*chip::timing::TimespecTimer val = new chip::timing::TimespecTimer(label);
-    // chip::timing::TimeValTimer val = new chip::timing::TimeValTimer(label);
-    chip::timing::GenericTimer * ptr;
-    ptr = &val;
-    return ptr;*/
 
-    //return new chip::timing::TimespecTimer(label);
-    return new chip::timing::TimeValTimer(label);
+    #ifdef CHIP_DEVICE_IS_ESP32
+        return new chip::timing::TimespecTimer(label);
+    #elseif CHIP_DEVICE_IS_NRF
+        return new chip::timing::TimeValTimer(label);   
+    #elseif CHIP_DEVICE_IS_ESP32_2 
+        return new chip::timing::TimeTTimer(label);  
+    #else
+        return new chip::timing::TimeValTimer(label);         
+    #endif
 }
+
+
+//DurationTimer::~DurationTimer(){}
+GenericTimer::~GenericTimer(){}
+//DurationTimer::~GenericTimer(){}
+//
+
+
 
 } // namespace timing
 
