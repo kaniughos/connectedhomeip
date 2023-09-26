@@ -24,7 +24,7 @@
 #include <lib/core/CHIPConfig.h>
 #include <lib/core/TLVTypes.h>
 #include <lib/support/SafeInt.h>
-#include <tracing/DurationTimer.h>
+#include <system/DurationTimer.h>
 
 namespace chip {
 

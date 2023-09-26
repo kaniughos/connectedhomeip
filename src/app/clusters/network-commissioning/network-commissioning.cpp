@@ -36,7 +36,7 @@
 #include <platform/PlatformManager.h>
 #include <platform/internal/DeviceNetworkInfo.h>
 #include <tracing/macros.h>
-#include <tracing/DurationTimer.h>
+#include <system/DurationTimer.h>
 
 #include <array>
 #include <utility>

@@ -48,7 +48,7 @@
 #include <platform/CHIPDeviceLayer.h>
 #include <string.h>
 #include <tracing/macros.h>
-#include <tracing/DurationTimer.h>
+#include <system/DurationTimer.h>
 
 using namespace chip;
 using namespace ::chip::Transport;
