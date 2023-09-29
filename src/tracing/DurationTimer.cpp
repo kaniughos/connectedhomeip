@@ -1,14 +1,8 @@
 #include "DurationTimer.h"
 #include "DurationTimerImpl.h"
-//#include <lib/support/logging/CHIPLogging.h>
-#include <stdint.h>
 #include <string>
-//#include <time.h>
-//#include <sys/time.h>
-// #include <system/SystemClock.h>
 
 using namespace std;
-// using chip::System;
 
 // todo add description
 namespace chip {
@@ -41,13 +35,7 @@ GenericTimer * GetDefaultTimingInstancePtr(string label)
     #endif
 }
 
-
-//DurationTimer::~DurationTimer(){}
 GenericTimer::~GenericTimer(){}
-//DurationTimer::~GenericTimer(){}
-//
-
-
 
 } // namespace timing
 

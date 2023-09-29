@@ -2,12 +2,21 @@
 
 #include "DurationTimer.h"
 #include <iostream>
-#include <stdio.h>
+//#include <stdio.h>
 #include <string>
 // #include <system/SystemClock.h>
 // timeval
+#ifdef CHIP_DEVICE_IS_NRF
 #include <sys/time.h>
+#endif
+
+#if defined  (CHIP_DEVICE_IS_ESP32) || defined (CHIP_DEVICE_IS_ESP32_2)
 #include <time.h>
+#endif
+
+#define DATETIME_PATTERN  ("%Y-%m-%dT%H:%M:%SZ")
+#define DATETIME_LEN (sizeof "1970-01-01T23:59:59.")
+#define ISO8601_LEN (sizeof "1970-01-01T23:59:59.123456Z")
 
 using namespace std;
 
@@ -33,7 +42,7 @@ public:
     void start() override;
     void stop() override;
     double duration() override;
-    double static duration_calc(timespec start, timespec stop);
+    double duration_calc(timespec start, timespec stop) override;
     // TempTimer<timespec> static getInstance(string s){
     //     return TimespecTimer(s);
     // };
@@ -64,7 +73,7 @@ public:
     void start();
     void stop();
     double duration();
-    double static duration_calc(time_t start, time_t stop);
+    double duration_calc(time_t start, time_t stop) override;
     // DurationTimer<time_t> getInstance(string s){
     //     return new TimeTTimer(s);
     // };
@@ -90,12 +99,12 @@ public:
     // constructors
     //TimeValTimer(uint8_t mod, string s) : DurationTimer(mod, s){};
     TimeValTimer(string s) : DurationTimer(s){};
-    ~TimeValTimer();
+    ~TimeValTimer() = default;
     // member functions
-    void start();
-    void stop();
-    double duration();
-    double static duration_calc(timeval start, timeval stop);
+    void start() override;
+    void stop() override;
+    double duration() override;
+    double duration_calc(timeval start, timeval stop);
 
     // DurationTimer<timeval> static getInstance(string s){
     //     return TimeValTimer(s);
@@ -105,7 +114,7 @@ public:
         t1    = ( timeval){-1};
         t2    = ( timeval){-1};
         label = string(NULL);
-    };
+    }
 };
 
 #endif

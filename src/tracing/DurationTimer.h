@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <iostream>
-//#include <stdio.h>
 #include <string>
 
 /**
@@ -49,7 +47,7 @@ protected:
     T t2;
     string label;
     // todo revisit module references
-    uint8_t module;
+    //uint8_t module;
 
 public:
     // constructors
@@ -61,18 +59,18 @@ public:
     DurationTimer(string s) : GenericTimer{} { label = s; }
     virtual ~DurationTimer() = default;
     virtual void start() override = 0;
-    virtual void stop() override
-    {
+    virtual void stop() override = 0;
+    /*{
         // GenericTimer::stop();
         destroy();
 
         delete this;
-    };
+    };*/
     virtual double duration() override = 0;
 
     virtual void destroy() override = 0;
 
-    static double duration_calc(T start, T stop);
+    double duration_calc(T start, T stop);
 
 };
 
