@@ -12,7 +12,7 @@
 #include <time.h>
 #endif
 
-using namespace std;
+//using namespace std;
 using namespace std::literals;
 
 namespace chip {
@@ -66,7 +66,7 @@ string DurationTimer::toTimeStr(timeval * time)
     struct tm * tm_info = gmtime(&(time->tv_sec));
     strftime(buff, DATETIME_LEN, DATETIME_PATTERN, tm_info);
     char * str = new char[ISO8601_LEN];
-    snprintf(str, ISO8601_LEN, "time: %s.%05d", buff, time->tv_usec);
+    snprintf(str, ISO8601_LEN, "time: %s.%05ld", buff, ((long int)time->tv_usec));
 
     return str;
 }
