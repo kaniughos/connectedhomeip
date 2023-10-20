@@ -51,7 +51,7 @@ double DurationTimer::duration()
 {
     double dur = ((double) (t2.tv_usec - t1.tv_usec) * 1e-6);
 
-    string timestr = toTimeStr(&t2);
+    std::string timestr = toTimeStr(&t2);
 
     ChipLogDetail(DeviceLayer, "Timer: %s TIME_SPENT (sec) %f , %s ", label.c_str(), dur, timestr.c_str());
 
@@ -59,7 +59,7 @@ double DurationTimer::duration()
 }
 
 // utility method
-string DurationTimer::toTimeStr(timeval * time)
+std::string DurationTimer::toTimeStr(timeval * time)
 {
     char * buff = new char[DATETIME_LEN];
 
@@ -94,7 +94,7 @@ double DurationTimer::duration()
 {
     double dur = (double) (t2.tv_sec - t1.tv_sec) + ((t2.tv_nsec - t1.tv_nsec) * 1e-9);
     // printf("Timer: t2.sec= %lld t1.sec= %lld : t2.nsec= %ld  t1.nsec= %ld  \n", t2.tv_sec, t1.tv_sec, t2.tv_nsec, t1.tv_nsec);
-    string timestr = toTimeStr(&t2);
+    std::string timestr = toTimeStr(&t2);
 
     printf("Timer: %s TIME_SPENT (sec) %f , %s \n", label.c_str(), dur, timestr.c_str());
 
@@ -102,7 +102,7 @@ double DurationTimer::duration()
 }
 
 // utility method
-string DurationTimer::toTimeStr(timespec * time)
+std::string DurationTimer::toTimeStr(timespec * time)
 {
     char * buff = new char[DATETIME_LEN];
 
@@ -136,18 +136,18 @@ double DurationTimer::duration()
 }
 
 // utility method
-string DurationTimer::toTimeStr(timespec * time)
+std::string DurationTimer::toTimeStr(timespec * time)
 {
     return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 #endif
 
-DurationTimer GetDefaultTimingInstance(string label)
+DurationTimer GetDefaultTimingInstance(std::string label)
 {
     return chip::timing::DurationTimer(label);
 }
 
-DurationTimer * GetDefaultTimingInstancePtr(string label)
+DurationTimer * GetDefaultTimingInstancePtr(std::string label)
 {
     return new chip::timing::DurationTimer(label);
 }

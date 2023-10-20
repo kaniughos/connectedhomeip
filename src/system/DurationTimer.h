@@ -41,7 +41,7 @@
 #include <time.h>
 #endif
 
-using namespace std;
+//using namespace std;
 
 namespace chip {
 namespace timing {
@@ -50,13 +50,13 @@ class DurationTimer
 {
 
 protected:
-    string label;
+    std::string label;
 #if CHIP_DEVICE_USES_SYS_TIME
 /**
  * SystemClock/clock-gettime supported therefore timeval struct.
  * */
 private:
-    string toTimeStr(timeval * time);
+    std::string toTimeStr(timeval * time);
 
 protected:
     timeval t1;
@@ -68,7 +68,7 @@ protected:
  * clock-SystemClock/clock-gettime not supported therefore use timespec struct
  * */
 private:
-    string toTimeStr(timespec * time);
+    std::string toTimeStr(timespec * time);
 
 protected:
     timespec t1;
@@ -81,7 +81,7 @@ public:
     /**
      * Constructor sets label as an identifier of a unique process.
     */
-    DurationTimer(string s) { label = s; }
+    DurationTimer(std::string s) { label = s; }
 
     //default destructor
     ~DurationTimer() = default;
@@ -103,8 +103,8 @@ public:
     double duration();
 };
 
-DurationTimer GetDefaultTimingInstance(string label);
-DurationTimer * GetDefaultTimingInstancePtr(string label);
+DurationTimer GetDefaultTimingInstance(std::string label);
+DurationTimer * GetDefaultTimingInstancePtr(std::string label);
 
 } // namespace timing
 } // namespace chip
