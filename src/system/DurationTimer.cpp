@@ -22,7 +22,7 @@ namespace timing {
 
 #define DATETIME_LEN (sizeof "1970-01-01T23:59:59")
 
-#define ISO8601_LEN (sizeof "1970-01-01T23:59:59.123456Z")
+#define ISO8601_LEN (sizeof "time: 1970-01-01T23:59:59.123456Z")
 
 #if CHIP_DEVICE_USES_SYS_TIME
 // member functions
@@ -49,7 +49,7 @@ void DurationTimer::stop()
 
 double DurationTimer::duration()
 {
-    double dur = ((t2.tv_usec - t1.tv_usec) * 1e-6);
+    double dur = ((double) (t2.tv_usec - t1.tv_usec) * 1e-6);
 
     string timestr = toTimeStr(&t2);
 
@@ -66,7 +66,7 @@ string DurationTimer::toTimeStr(timeval * time)
     struct tm * tm_info = gmtime(&(time->tv_sec));
     strftime(buff, DATETIME_LEN, DATETIME_PATTERN, tm_info);
     char * str = new char[ISO8601_LEN];
-    snprintf(str, ISO8601_LEN, "time: %s.%05ld", buff, time->tv_usec);
+    snprintf(str, ISO8601_LEN, "time: %s.%05d", buff, time->tv_usec);
 
     return str;
 }
@@ -115,6 +115,30 @@ string DurationTimer::toTimeStr(timespec * time)
     snprintf(str, ISO8601_LEN, "time: %s.%05ld", buff, time->tv_nsec);
 
     return str;
+}
+#endif
+
+#if !CHIP_DEVICE_USES_TIME_H && !CHIP_DEVICE_USES_SYS_TIME
+// member functions
+void DurationTimer::start()
+{
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+}
+
+void DurationTimer::stop()
+{
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+}
+
+double DurationTimer::duration()
+{
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+}
+
+// utility method
+string DurationTimer::toTimeStr(timespec * time)
+{
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 #endif
 

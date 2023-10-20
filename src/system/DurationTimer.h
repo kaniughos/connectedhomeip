@@ -16,8 +16,14 @@
 #define CHIP_DEVICE_USES_SYS_TIME 1
 #define CHIP_DEVICE_USES_TIME_H 0
 #else // ! CHIP_SYSTEM_CONFIG_PLATFORM_PROVIDES_TIME etal
-#define CHIP_DEVICE_USES_TIME_H 1
+#if !HAVE_CLOCK_GETTIME && !HAVE_GETTIMEOFDAY
+#error "CHIP_SYSTEM_CONFIG_USE_POSIX_TIME_FUNCTS requires either clock_gettime() or gettimeofday()"
+#define CHIP_DEVICE_USES_TIME_H 0
 #define CHIP_DEVICE_USES_SYS_TIME 0
+#else
+#define CHIP_DEVICE_USES_TIME_H 1
+#define CHIP_DEVICE_USES_SYS_TIME 0  
+#endif // HAVE_CLOCK_GETTIME || HAVE_GETTIMEOFDAY
 #endif // CHIP_SYSTEM_CONFIG_PLATFORM_PROVIDES_TIME etal
 
 
@@ -42,6 +48,9 @@ namespace timing {
 
 class DurationTimer
 {
+
+protected:
+    string label;
 #if CHIP_DEVICE_USES_SYS_TIME
 /**
  * SystemClock/clock-gettime supported therefore timeval struct.
@@ -52,7 +61,6 @@ private:
 protected:
     timeval t1;
     timeval t2;
-    string label;
 #endif
 
 #if CHIP_DEVICE_USES_TIME_H
@@ -65,7 +73,6 @@ private:
 protected:
     timespec t1;
     timespec t2;
-    string label;
 #endif
 
 
