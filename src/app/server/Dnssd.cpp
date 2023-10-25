@@ -39,7 +39,7 @@
 #include <system/TimeSource.h>
 
 #include <app/server/Server.h>
-#include <system/DurationTimer.h>
+#include <tracing/DurationTimer.h>
 
 namespace chip {
 namespace app {

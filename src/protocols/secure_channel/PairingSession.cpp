@@ -20,7 +20,7 @@
 
 #include <lib/core/TLVTypes.h>
 #include <lib/support/SafeInt.h>
-#include <system/DurationTimer.h>
+#include <tracing/DurationTimer.h>
 
 namespace chip {
 

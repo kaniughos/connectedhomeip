@@ -25,7 +25,7 @@
 #include <platform/CHIPDeviceLayer.h>
 #include <platform/CommissionableDataProvider.h>
 #include <platform/DeviceControlServer.h>
-#include <system/DurationTimer.h>
+#include <tracing/DurationTimer.h>
 
 using namespace chip::app::Clusters;
 using namespace chip::System::Clock;

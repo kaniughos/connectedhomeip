@@ -18,7 +18,7 @@
 
 #include <app/CASESessionManager.h>
 #include <lib/address_resolve/AddressResolve.h>
-#include <system/DurationTimer.h>
+#include <tracing/DurationTimer.h>
 
 namespace chip {
 
