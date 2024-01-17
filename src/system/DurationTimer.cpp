@@ -73,7 +73,7 @@ string DurationTimer::toTimeStr(timeval * time)
 }
 #endif
 
-#ifdef CHIP_DEVICE_USES_TIME_H
+#if CHIP_DEVICE_USES_TIME_H
 // member functions
 void DurationTimer::start()
 {
