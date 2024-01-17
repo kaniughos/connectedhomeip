@@ -88,7 +88,8 @@ void CASESessionManager::FindOrEstablishSessionHelper(const ScopedNodeId & peerI
 #endif
 )
 {
-    chip::timing::TimespecTimer timer ( "CASESessionManager: FindOrEstablishSession" );
+    
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "CASESessionManager: FindOrEstablishSession" );
     timer.start();
 
     ChipLogDetail(CASESessionManager, "FindOrEstablishSession: PeerId = [%d:" ChipLogFormatX64 "]", peerId.GetFabricIndex(),

@@ -320,7 +320,7 @@ CHIP_ERROR Instance::Write(const ConcreteDataAttributePath & aPath, AttributeVal
 
 void Instance::OnNetworkingStatusChange(Status aCommissioningError, Optional<ByteSpan> aNetworkId, Optional<int32_t> aConnectStatus)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: OnNetworkingStatusChange ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: OnNetworkingStatusChange ");
     timer.start();
     if (aNetworkId.HasValue() && aNetworkId.Value().size() > kMaxNetworkIDLen)
     {
@@ -350,7 +350,7 @@ void Instance::OnNetworkingStatusChange(Status aCommissioningError, Optional<Byt
 
 void Instance::HandleScanNetworks(HandlerContext & ctx, const Commands::ScanNetworks::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleScanNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleScanNetwork ");
     timer.start();
     MATTER_TRACE_SCOPE("HandleScanNetwork", "NetworkCommissioning");
     if (mFeatureFlags.Has(Feature::kWiFiNetworkInterface))
@@ -424,7 +424,7 @@ bool CheckFailSafeArmed(CommandHandlerInterface::HandlerContext & ctx)
 
 void Instance::HandleAddOrUpdateWiFiNetwork(HandlerContext & ctx, const Commands::AddOrUpdateWiFiNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleAddOrUpdateWiFiNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleAddOrUpdateWiFiNetwork ");
     timer.start();
 
     MATTER_TRACE_SCOPE("HandleAddOrUpdateWiFiNetwork", "NetworkCommissioning");
@@ -608,7 +608,7 @@ exit:
 
 void Instance::HandleAddOrUpdateThreadNetwork(HandlerContext & ctx, const Commands::AddOrUpdateThreadNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleAddOrUpdateThreadNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleAddOrUpdateThreadNetwork ");
     timer.start();
     MATTER_TRACE_SCOPE("HandleAddOrUpdateThreadNetwork", "NetworkCommissioning");
 
@@ -645,7 +645,7 @@ void Instance::CommitSavedBreadcrumb()
 
 void Instance::HandleRemoveNetwork(HandlerContext & ctx, const Commands::RemoveNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleRemoveNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleRemoveNetwork ");
     timer.start();
 
     MATTER_TRACE_SCOPE("HandleRemoveNetwork", "NetworkCommissioning");
@@ -669,7 +669,7 @@ void Instance::HandleRemoveNetwork(HandlerContext & ctx, const Commands::RemoveN
 
 void Instance::HandleConnectNetwork(HandlerContext & ctx, const Commands::ConnectNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleConnectNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleConnectNetwork ");
     timer.start();
 
     MATTER_TRACE_SCOPE("HandleConnectNetwork", "NetworkCommissioning");
@@ -704,7 +704,7 @@ void Instance::HandleNonConcurrentConnectNetwork()
 
 void Instance::HandleReorderNetwork(HandlerContext & ctx, const Commands::ReorderNetwork::DecodableType & req)
 {
-    chip::timing::TimespecTimer timer ( "NetworkCommissioning: HandleReorderNetwork ");
+    chip::timing::DurationTimer timer = chip::timing::GetDefaultTimingInstance( "NetworkCommissioning: HandleReorderNetwork ");
     timer.start();
 
     MATTER_TRACE_SCOPE("HandleReorderNetwork", "NetworkCommissioning");
