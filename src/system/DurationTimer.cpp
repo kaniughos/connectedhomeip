@@ -1,6 +1,6 @@
 #include <lib/support/logging/CHIPLogging.h>
 #include <stdint.h>
-#include <string>
+// #include <string>
 #include <system/DurationTimer.h>
 
 #if CHIP_DEVICE_USES_SYS_TIME
@@ -10,6 +10,8 @@ using namespace std::literals;
 
 namespace chip {
 namespace timing {
+
+#define DURATION_SHOW_TIME 0
 
 #define DATETIME_PATTERN ("%Y-%m-%dT%H:%M:%S")
 
