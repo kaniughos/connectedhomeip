@@ -56,9 +56,9 @@ double DurationTimer::duration()
     auto dur            = millis.count(); // t2.count() - t1.count();
     suseconds_t omillis = static_cast<suseconds_t>(dur);
 
-    std::string timestr = toTimeStr(t2);
+    // std::string timestr = toTimeStr(t2);
 
-    // ChipLogDetail(DeviceLayer, "Timer: %s TIME_SPENT (sec) %f , %s ", label.c_str(), dur, timestr.c_str());
+    //  ChipLogDetail(DeviceLayer, "Timer: %s TIME_SPENT (sec) %f , %s ", label.c_str(), dur, timestr.c_str());
     printf("Timer: %s %s TIME_SPENT (millisec) %ld \n", label.c_str(), timestr.c_str(), omillis);
 
     return (double) dur;
