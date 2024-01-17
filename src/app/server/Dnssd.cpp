@@ -38,6 +38,9 @@
 #include <setup_payload/SetupPayload.h>
 #include <system/TimeSource.h>
 
+#include <app/server/Server.h>
+#include <tracing/DurationTimer.h>
+
 namespace chip {
 namespace app {
 namespace {
@@ -399,6 +402,9 @@ void DnssdServer::StopServer()
 void DnssdServer::StartServer(Dnssd::CommissioningMode mode)
 {
     ChipLogProgress(Discovery, "Updating services using commissioning mode %d", static_cast<int>(mode));
+    
+    chip::timing::TimespecTimer timer ( "Device Discover " );
+    timer.start();
 
     DeviceLayer::PlatformMgr().AddEventHandler(OnPlatformEventWrapper, 0);
 
@@ -468,6 +474,8 @@ void DnssdServer::StartServer(Dnssd::CommissioningMode mode)
     {
         ChipLogError(Discovery, "Failed to finalize service update: %" CHIP_ERROR_FORMAT, err.Format());
     }
+
+    timer.stop();
 }
 
 #if CHIP_ENABLE_ROTATING_DEVICE_ID && defined(CHIP_DEVICE_CONFIG_ROTATING_DEVICE_ID_UNIQUE_ID)
