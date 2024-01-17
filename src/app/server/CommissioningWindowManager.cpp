@@ -28,6 +28,7 @@
 #include <platform/CHIPDeviceLayer.h>
 #include <platform/CommissionableDataProvider.h>
 #include <platform/DeviceControlServer.h>
+#include <tracing/DurationTimer.h>
 
 using namespace chip::app::Clusters;
 using namespace chip::System::Clock;
@@ -245,6 +246,9 @@ CHIP_ERROR CommissioningWindowManager::OpenCommissioningWindow(Seconds16 commiss
 
 CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 {
+    chip::timing::TimespecTimer timer ( "AppServer: AdvertiseAndListenForPASE" );
+    timer.start();
+
     VerifyOrReturnError(mCommissioningTimeoutTimerArmed, CHIP_ERROR_INCORRECT_STATE);
 
     mPairingSession.Clear();
@@ -284,6 +288,7 @@ CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 
     ReturnErrorOnFailure(StartAdvertisement());
 
+    timer.stop();
     return CHIP_NO_ERROR;
 }
 

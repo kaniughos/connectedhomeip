@@ -463,8 +463,9 @@ exit:
             CleanupSessionsForFabric(*sessionManager, fabricBeingRemoved);
         }
     }
-    //KN
+
     timer.stop();
+
     return true;
 }
 
@@ -480,7 +481,6 @@ bool emberAfOperationalCredentialsClusterUpdateFabricLabelCallback(app::CommandH
 
     ChipLogProgress(Zcl, "OpCreds: Received an UpdateFabricLabel command");
 
-    //KN
     chip::timing::TimespecTimer timer ( "OpCreds: UpdateFabricLabel" );
     timer.start();
 
@@ -522,8 +522,9 @@ exit:
     {
         commandObj->AddStatus(commandPath, finalStatus);
     }
-    //KN
+
     timer.stop();
+
     return true;
 }
 
@@ -627,7 +628,6 @@ bool emberAfOperationalCredentialsClusterAddNOCCallback(app::CommandHandler * co
 
     ChipLogProgress(Zcl, "OpCreds: Received an AddNOC command");
 
-    //KN
     chip::timing::TimespecTimer timer ( "OpCreds: AddNOC" );
     timer.start();
 
@@ -774,8 +774,9 @@ exit:
         commandObj->AddStatus(commandPath, nonDefaultStatus);
         ChipLogError(Zcl, "OpCreds: Failed AddNOC request with IM error 0x%02x", to_underlying(nonDefaultStatus));
     }
-    //KN
+
     timer.stop();
+    
     return true;
 }
 
@@ -794,7 +795,7 @@ bool emberAfOperationalCredentialsClusterUpdateNOCCallback(app::CommandHandler *
     FabricIndex fabricIndex = 0;
 
     ChipLogProgress(Zcl, "OpCreds: Received an UpdateNOC command");
-    //KN
+
     chip::timing::TimespecTimer timer ( "OpCreds: UpdateNOC" );
     timer.start();
 
@@ -870,7 +871,7 @@ exit:
         commandObj->AddStatus(commandPath, nonDefaultStatus);
         ChipLogError(Zcl, "OpCreds: Failed UpdateNOC request with IM error 0x%02x", to_underlying(nonDefaultStatus));
     }
-    //KN
+
     timer.stop();
 
     return true;
@@ -880,7 +881,7 @@ bool emberAfOperationalCredentialsClusterCertificateChainRequestCallback(
     app::CommandHandler * commandObj, const app::ConcreteCommandPath & commandPath,
     const Commands::CertificateChainRequest::DecodableType & commandData)
 {
-    //KN
+
     chip::timing::TimespecTimer timer ( "OpCreds: Certificate Chain" );
     timer.start();
 
@@ -925,7 +926,6 @@ exit:
         commandObj->AddStatus(commandPath, Status::Failure);
     }
 
-    //KN 
     timer.stop();
 
     return true;
@@ -935,7 +935,7 @@ bool emberAfOperationalCredentialsClusterAttestationRequestCallback(app::Command
                                                                     const app::ConcreteCommandPath & commandPath,
                                                                     const Commands::AttestationRequest::DecodableType & commandData)
 {
-    //KN
+
     chip::timing::TimespecTimer timer ( "OpCreds: AttestationRequest" );
     timer.start();
 
@@ -1037,7 +1037,7 @@ bool emberAfOperationalCredentialsClusterCSRRequestCallback(app::CommandHandler 
                                                             const app::ConcreteCommandPath & commandPath,
                                                             const Commands::CSRRequest::DecodableType & commandData)
 {
-    //KN
+
     chip::timing::TimespecTimer timer ( "OpCreds: CSRRequest" );
     timer.start();
 
@@ -1178,7 +1178,7 @@ bool emberAfOperationalCredentialsClusterAddTrustedRootCertificateCallback(
     app::CommandHandler * commandObj, const app::ConcreteCommandPath & commandPath,
     const Commands::AddTrustedRootCertificate::DecodableType & commandData)
 {
-    //KN
+
     chip::timing::TimespecTimer timer ( "OpCreds: AddTrustedRootCertificate" );
     timer.start();
 
