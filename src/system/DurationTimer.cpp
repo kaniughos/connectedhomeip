@@ -4,6 +4,7 @@
 #include <string>
 
 #if CHIP_DEVICE_USES_SYS_TIME
+#include <lib/support/logging/CHIPLogging.h>
 #include <system/SystemClock.h>
 #endif
 
@@ -14,9 +15,7 @@
 using namespace std;
 using namespace std::literals;
 
-// todo add description
 namespace chip {
-
 namespace timing {
 
 #define DATETIME_PATTERN ("%Y-%m-%dT%H:%M:%S")
@@ -34,7 +33,7 @@ void DurationTimer::start()
 
     chip::System::Clock::ToTimeval(tv1, t1);
 
-    ChipLogDetail(DeviceLayer, "Timer: %s start time: %s ", label.c_str(), toTimeStr(&t1).c_str());
+    ChipLogDetail(DeviceLayer, "Timer: %s start %s ", label.c_str(), toTimeStr(&t1).c_str());
 }
 
 void DurationTimer::stop()
@@ -44,7 +43,7 @@ void DurationTimer::stop()
 
     chip::System::Clock::ToTimeval(tv2, t2);
 
-    ChipLogDetail(DeviceLayer, "Timer: %s stop time: %s ", label.c_str(), toTimeStr(&t2).c_str());
+    ChipLogDetail(DeviceLayer, "Timer: %s stop %s ", label.c_str(), toTimeStr(&t2).c_str());
 
     duration();
 }
@@ -55,7 +54,7 @@ double DurationTimer::duration()
 
     string timestr = toTimeStr(&t2);
 
-    ChipLogDetail(DeviceLayer, "Timer: %s TIME_SPENT (sec) %f , time: %s ", label.c_str(), dur, timestr.c_str());
+    ChipLogDetail(DeviceLayer, "Timer: %s TIME_SPENT (sec) %f , %s ", label.c_str(), dur, timestr.c_str());
 
     return dur;
 }
@@ -68,7 +67,7 @@ string DurationTimer::toTimeStr(timeval * time)
     struct tm * tm_info = gmtime(&(time->tv_sec));
     strftime(buff, DATETIME_LEN, DATETIME_PATTERN, tm_info);
     char * str = new char[ISO8601_LEN];
-    snprintf(str, ISO8601_LEN, " %s.%05ld", buff, time->tv_usec);
+    snprintf(str, ISO8601_LEN, "time: %s.%05ld", buff, time->tv_usec);
 
     return str;
 }
@@ -79,15 +78,15 @@ string DurationTimer::toTimeStr(timeval * time)
 void DurationTimer::start()
 {
     clock_gettime(CLOCK_REALTIME, &t1);
-    
-    printf("Timer: %s start time: %s \n", label.c_str(), toTimeStr(&t1).c_str());
+
+    printf("Timer: %s start %s \n", label.c_str(), toTimeStr(&t1).c_str());
 }
 
 void DurationTimer::stop()
 {
     clock_gettime(CLOCK_REALTIME, &t2);
 
-    printf("Timer: %s stop time: %s \n", label.c_str(), toTimeStr(&t2).c_str());
+    printf("Timer: %s stop %s \n", label.c_str(), toTimeStr(&t2).c_str());
 
     duration();
 }
@@ -95,10 +94,10 @@ void DurationTimer::stop()
 double DurationTimer::duration()
 {
     double dur = (double) (t2.tv_sec - t1.tv_sec) + ((t2.tv_nsec - t1.tv_nsec) * 1e-9);
-    //printf("Timer: t2.sec= %lld t1.sec= %lld : t2.nsec= %ld  t1.nsec= %ld  \n", t2.tv_sec, t1.tv_sec, t2.tv_nsec, t1.tv_nsec);
+    // printf("Timer: t2.sec= %lld t1.sec= %lld : t2.nsec= %ld  t1.nsec= %ld  \n", t2.tv_sec, t1.tv_sec, t2.tv_nsec, t1.tv_nsec);
     string timestr = toTimeStr(&t2);
 
-    printf("Timer: %s TIME_SPENT (sec) %f , time: %s \n", label.c_str(), dur, timestr.c_str());
+    printf("Timer: %s TIME_SPENT (sec) %f , %s \n", label.c_str(), dur, timestr.c_str());
 
     return dur;
 }
@@ -114,7 +113,7 @@ string DurationTimer::toTimeStr(timespec * time)
 
     char * str = new char[ISO8601_LEN];
 
-    snprintf(str, ISO8601_LEN, " %s.%05ld", buff, time->tv_nsec);
+    snprintf(str, ISO8601_LEN, "time: %s.%05ld", buff, time->tv_nsec);
 
     return str;
 }
