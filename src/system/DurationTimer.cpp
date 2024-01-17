@@ -13,9 +13,7 @@ namespace timing {
 
 #if (DURATION_SHOW_TIME)
 #define DATETIME_PATTERN ("%Y-%m-%dT%H:%M:%S")
-
 #define DATETIME_LEN (sizeof "1970-01-01T23:59:59")
-
 #define ISO8601_LEN (sizeof "time: 1970-01-01T23:59:59.123456Z")
 #endif
 
