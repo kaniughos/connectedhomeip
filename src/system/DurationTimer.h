@@ -19,8 +19,7 @@
 #define CHIP_DEVICE_USES_SYS_TIME 0
 #endif // CHIP_SYSTEM_CONFIG_PLATFORM_PROVIDES_TIME etal
 
-
-#include <system/SystemClock.h>
+#define DURATION_SHOW_TIME 0
 
 namespace chip {
 namespace timing {
